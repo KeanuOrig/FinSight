@@ -1,9 +1,6 @@
-from datetime import datetime
-from django.core.exceptions import ValidationError
 from django.contrib import admin
 from import_export import fields, resources, widgets
-from import_export.admin import ImportExportMixin, ImportExportModelAdmin
-from import_export.formats.base_formats import DEFAULT_FORMATS
+from import_export.admin import ImportExportModelAdmin
 from stock_analysis.stocks.forms.import_form import StockDataImportForm, StockDataConfirmImportForm
 from .models import Stock, StockData
 
