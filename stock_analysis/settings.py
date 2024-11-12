@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 # Initialize the environ library to read the .env file
 env = environ.Env(
@@ -47,13 +48,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',          # Django REST Framework
-    'core',                    # Core functionality
-    'stocks',                  # Stocks data management
-    'ai_analysis',             # AI integration with ChatGPT
-    'api',                     # REST API
-    'users',                   # User management
-    'reports',                 # Reports and analysis
+    'import_export',
+    'pandas',
+    'rest_framework',                         # Django REST Framework
+    'stock_analysis.core',                    # Core functionality
+    'stock_analysis.stocks',                  # Stocks data management
+    'stock_analysis.ai_analysis',             # AI integration with ChatGPT
+    'stock_analysis.api',                     # REST API
+    'stock_analysis.users',                   # User management
+    'stock_analysis.reports',                 # Reports and analysis
 ]
 
 MIDDLEWARE = [
@@ -138,3 +141,30 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',  # Choose the minimum logging level you want to record
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        # Custom loggers for your own apps, like stock analysis
+        'your_app_name': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
