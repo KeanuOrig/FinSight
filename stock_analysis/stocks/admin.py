@@ -13,7 +13,7 @@ class StockDataResource(resources.ModelResource):
     low_price = fields.Field(attribute='low_price', column_name='Low')
     volume = fields.Field(attribute='volume', column_name='Volume')
     stock_id = fields.Field(attribute='stock_id', column_name='stock_id')
-    stock = fields.Field(attribute='stock', column_name='stock', widget=widgets.ForeignKeyWidget(Stock, 'symbol'))
+    """ stock = fields.Field(attribute='stock', column_name='stock', widget=widgets.ForeignKeyWidget(Stock, 'symbol')) """
     
     class Meta:
         model = StockData
@@ -44,7 +44,9 @@ class StockDataResource(resources.ModelResource):
             except StockData.DoesNotExist:
                 return None  # No existing instance, so a new one will be created
         return None
-    
+    """ def after_import_instance(self, instance, new, row_number=None, **kwargs):
+        instance.stock = kwargs["stock"] """
+                                 
 class StockDataAdmin(ImportExportModelAdmin):  
     resource_class = StockDataResource
     list_display = ['stock', 'date', 'open_price', 'close_price', 'high_price', 'low_price', 'volume']
@@ -63,7 +65,6 @@ class StockDataAdmin(ImportExportModelAdmin):
         # the confirm form (if provided)
         if import_form_class:
             initial['stock'] = import_form_class.cleaned_data['stock']
-            print("get_confirm_form_initial cleaned_data:", initial)
         return initial
     
     def get_import_data_kwargs(self, request, *args, **kwargs):

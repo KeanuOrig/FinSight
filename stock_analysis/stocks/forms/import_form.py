@@ -16,5 +16,4 @@ class StockDataConfirmImportForm(ConfirmImportForm):
         queryset=Stock.objects.all(),
         required=True,
         label="Selected Stock",
-        disabled=True
     )

@@ -11,7 +11,7 @@ class Stock(models.Model):
         return self.symbol
 
 class StockData(models.Model):
-    stock = models.ForeignKey(Stock, related_name='data', on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     date = models.DateField()
     open_price = models.FloatField()
     close_price = models.FloatField()
@@ -24,3 +24,9 @@ class StockData(models.Model):
 
     def __str__(self):
         return f"{self.stock.symbol} data for {self.date}"
+    
+    def save(self, *args, **kwargs):
+        # Clean and convert volume before saving
+        if isinstance(self.volume, str):
+            self.volume = int(self.volume.replace(',', ''))
+        super().save(*args, **kwargs)

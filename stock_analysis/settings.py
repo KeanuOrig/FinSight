@@ -19,19 +19,24 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
     BASE_API_URI= (str, 'http://127.0.0.1:8000/api'),
+    OPENAI_API_KEY= (str, 'null'),
+    GEMINI_API_KEY= (str, 'null'),
 )
 
-BASE_API_URI= env('BASE_API_URI')
+env.read_env(env.str('ENV_PATH', '.env'))
 
+BASE_API_URI= env('BASE_API_URI')
+OPENAI_API_KEY= env('OPENAI_API_KEY')
+GEMINI_API_KEY= env('GEMINI_API_KEY')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('GEMINI_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -53,7 +58,6 @@ INSTALLED_APPS = [
     'rest_framework',                         # Django REST Framework
     'stock_analysis.core',                    # Core functionality
     'stock_analysis.stocks',                  # Stocks data management
-    'stock_analysis.ai_analysis',             # AI integration with ChatGPT
     'stock_analysis.api',                     # REST API
     'stock_analysis.users',                   # User management
     'stock_analysis.reports',                 # Reports and analysis
