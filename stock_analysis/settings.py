@@ -19,15 +19,15 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
     BASE_API_URI= (str, 'http://127.0.0.1:8000/api'),
-    OPENAI_API_KEY= (str, 'null'),
-    GEMINI_API_KEY= (str, 'null'),
+    DB_NAME= (str, 'stock_analysis'),
+    DB_USER= (str, 'admin'),
+    DB_PASSWORD= (str, 'admin'),
+    DB_HOST= (str, 'localhost'),
+    DB_PORT= (int, ),
 )
 
 env.read_env(env.str('ENV_PATH', '.env'))
 
-BASE_API_URI= env('BASE_API_URI')
-OPENAI_API_KEY= env('OPENAI_API_KEY')
-GEMINI_API_KEY= env('GEMINI_API_KEY')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print(BASE_DIR)
@@ -97,13 +97,23 @@ WSGI_APPLICATION = 'stock_analysis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} """
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
