@@ -1,0 +1,172 @@
+[
+    {
+        "model": "stocks.stock",
+        "pk": 1,
+        "fields": {
+            "symbol": "AC",
+            "company_name": "Ayala Corporation",
+            "sector": "Holding Firms",
+            "industry": "Conglomerates"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 2,
+        "fields": {
+            "symbol": "ALI",
+            "company_name": "Ayala Land, Inc.",
+            "sector": "Property",
+            "industry": "Real Estate Development"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 3,
+        "fields": {
+            "symbol": "BDO",
+            "company_name": "BDO Unibank, Inc.",
+            "sector": "Financials",
+            "industry": "Banks"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 4,
+        "fields": {
+            "symbol": "BPI",
+            "company_name": "Bank of the Philippine Islands",
+            "sector": "Financials",
+            "industry": "Banks"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 5,
+        "fields": {
+            "symbol": "GLO",
+            "company_name": "Globe Telecom, Inc.",
+            "sector": "Services",
+            "industry": "Telecommunications"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 6,
+        "fields": {
+            "symbol": "JFC",
+            "company_name": "Jollibee Foods Corporation",
+            "sector": "Industrial",
+            "industry": "Restaurants"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 7,
+        "fields": {
+            "symbol": "MBT",
+            "company_name": "Metropolitan Bank & Trust Company",
+            "sector": "Financials",
+            "industry": "Banks"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 8,
+        "fields": {
+            "symbol": "MPI",
+            "company_name": "Metro Pacific Investments Corporation",
+            "sector": "Holding Firms",
+            "industry": "Conglomerates"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 9,
+        "fields": {
+            "symbol": "SMPH",
+            "company_name": "SM Prime Holdings, Inc.",
+            "sector": "Property",
+            "industry": "Real Estate Development"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 10,
+        "fields": {
+            "symbol": "TEL",
+            "company_name": "PLDT Inc.",
+            "sector": "Services",
+            "industry": "Telecommunications"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 11,
+        "fields": {
+            "symbol": "URC",
+            "company_name": "Universal Robina Corporation",
+            "sector": "Industrial",
+            "industry": "Food & Beverage"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 12,
+        "fields": {
+            "symbol": "AREIT",
+            "company_name": "AREIT, Inc.",
+            "sector": "Real Estate",
+            "industry": "Real Estate Investment Trusts (REIT)"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 13,
+        "fields": {
+            "symbol": "SMC",
+            "company_name": "San Miguel Corporation",
+            "sector": "Conglomerates",
+            "industry": "Conglomerates"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 14,
+        "fields": {
+            "symbol": "DMC",
+            "company_name": "DMCI Holdings, Inc.",
+            "sector": "Holding Firms",
+            "industry": "Diversified"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 15,
+        "fields": {
+            "symbol": "AEV",
+            "company_name": "Aboitiz Equity Ventures, Inc.",
+            "sector": "Holding Firms",
+            "industry": "Conglomerates"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 16,
+        "fields": {
+            "symbol": "AP",
+            "company_name": "Aboitiz Power Corporation",
+            "sector": "Utilities",
+            "industry": "Electric Utilities"
+        }
+    },
+    {
+        "model": "stocks.stock",
+        "pk": 17,
+        "fields": {
+            "symbol": "PSEI",
+            "company_name": "Philippine Stock Exchange index",
+            "sector": "Index",
+            "industry": "Index"
+        }
+    }
+]

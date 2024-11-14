@@ -12,25 +12,31 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 # Initialize the environ library to read the .env file
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),
     BASE_API_URI= (str, 'http://127.0.0.1:8000/api'),
+    DB_NAME= (str, 'stock_analysis'),
+    DB_USER= (str, 'admin'),
+    DB_PASSWORD= (str, 'admin'),
+    DB_HOST= (str, 'localhost'),
+    DB_PORT= (int, ),
 )
 
-BASE_API_URI= env('BASE_API_URI')
+env.read_env(env.str('ENV_PATH', '.env'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('GEMINI_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,13 +53,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',          # Django REST Framework
-    'core',                    # Core functionality
-    'stocks',                  # Stocks data management
-    'ai_analysis',             # AI integration with ChatGPT
-    'api',                     # REST API
-    'users',                   # User management
-    'reports',                 # Reports and analysis
+    'import_export',
+    'pandas',
+    'rest_framework',                         # Django REST Framework
+    'stock_analysis.core',                    # Core functionality
+    'stock_analysis.stocks',                  # Stocks data management
+    'stock_analysis.api',                     # REST API
+    'stock_analysis.users',                   # User management
+    'stock_analysis.reports',                 # Reports and analysis
 ]
 
 MIDDLEWARE = [
@@ -90,13 +97,23 @@ WSGI_APPLICATION = 'stock_analysis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} """
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -138,3 +155,30 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',  # Choose the minimum logging level you want to record
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        # Custom loggers for your own apps, like stock analysis
+        'your_app_name': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}

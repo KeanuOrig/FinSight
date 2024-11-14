@@ -19,10 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),           # Core app (e.g., home page)
-    path('stocks/', include('stocks.urls')),  # Stocks app
-    path('ai/', include('ai_analysis.urls')), # AI Analysis app
-    path('api/', include('api.urls')),        # API app
-    path('users/', include('users.urls')),    # User management app
-    path('reports/', include('reports.urls')) # Reports app
+    path('stocks/', include("stock_analysis.stocks.urls")), 
 ]
