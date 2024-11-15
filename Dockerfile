@@ -14,11 +14,11 @@ COPY build.sh /app/
 # Make the build script executable
 RUN chmod +x /app/build.sh
 
-# Run the build script
-RUN /app/build.sh
-
 # Copy the current directory contents into the container at /app
 COPY . /app
+
+# Run the build script
+RUN /app/build.sh
 
 # Run the Django development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
