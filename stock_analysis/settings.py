@@ -18,7 +18,7 @@ import dj_database_url
 # Initialize the environ library to read the .env file
 env = environ.Env(
     # set casting, default value
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
     BASE_API_URI= (str, 'http://127.0.0.1:8000/api'),
     DB_NAME= (str, 'stock_analysis'),
     DB_USER= (str, 'admin'),

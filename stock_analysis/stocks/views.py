@@ -8,6 +8,7 @@ from .serializers import StockSerializer
 from rest_framework import generics
 from stock_analysis.ai_analysis.chatgpt_service import get_chatgpt_response
 from stock_analysis.ai_analysis.gemini_service import get_gemini_response
+from stock_analysis.utils.utils import api_response
 
 # Create your views here.
 
@@ -36,18 +37,18 @@ class StockPredictionView(APIView):
             stock_data = StockData.objects.filter(stock__symbol=symbol.upper()).order_by('-date').all()
            
             if not stock_data:
-                return JsonResponse({"error": "Stock data not found for the given symbol."}, status=404)
+                return JsonResponse({"error": "Stock data not found for the given symbol."}, status=status.HTTP_404_NOT_FOUND)
 
             # Prepare the data for analysis (you can pass the raw data or formatted data)
             formatted_stock_data = self.format_stock_data(stock_data)
-            return JsonResponse({"prediction": formatted_stock_data})
+
             # Call AI analysis service
             prediction = self.analyze_stock_data(formatted_stock_data, stock.company_name)
 
             return JsonResponse({"symbol": symbol, "prediction": prediction})
         
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     def format_stock_data(self, stock_data):
         # Convert stock data into a readable format for the AI model
