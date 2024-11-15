@@ -11,11 +11,11 @@ WORKDIR /app
 COPY requirements.txt /app/
 COPY build.sh /app/
 
-# Make the build script executable
-RUN chmod +x /app/build.sh
-
 # Copy the current directory contents into the container at /app
 COPY . /app
+
+# Make the build script executable
+RUN chmod +x /app/build.sh
 
 # Run the build script
 RUN /app/build.sh
