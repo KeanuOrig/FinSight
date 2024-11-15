@@ -7,18 +7,14 @@ ENV PYTHONUNBUFFERED=1
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file and build script into the container
+# Copy the requirements file into the container
 COPY requirements.txt /app/
-COPY build.sh /app/
+
+# Install dependencies
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Make the build script executable
-RUN chmod +x /app/build.sh
-
-# Run the build script
-RUN /app/build.sh
-
 # Run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
