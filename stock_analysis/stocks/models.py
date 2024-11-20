@@ -11,7 +11,7 @@ class Stock(models.Model):
         return self.symbol
 
 class StockData(models.Model):
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name='data')
     date = models.DateField()
     open_price = models.FloatField()
     close_price = models.FloatField()

@@ -4,11 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Stock, StockData
-from .serializers import StockSerializer
+from .serializers import StockSerializer, StockDataSerializer
 from rest_framework import generics
 from stock_analysis.ai_analysis.chatgpt_service import get_chatgpt_response
 from stock_analysis.ai_analysis.gemini_service import get_gemini_response
 from stock_analysis.utils.utils import api_response
+from django.utils.dateparse import parse_date
+from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 
@@ -17,10 +20,31 @@ class StockDetailView(APIView):
     Retrieve stock details by symbol.
     """
     def get(self, request, symbol):
+        
+        date_from = request.query_params.get('date_from', None)
+        date_to = request.query_params.get('date_to', None)
+        
         try:
-            stock = Stock.objects.get(symbol=symbol.upper())
-            serializer = StockSerializer(stock)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            stock = Stock.objects.prefetch_related('data').get(symbol=symbol.upper())
+            stock_data = stock.data.all()
+            
+            if date_from and date_to:
+                
+                date_from = parse_date(date_from)
+                date_to = parse_date(date_to)
+                
+                if date_from and date_to:
+                    stock_data = stock_data.filter(date__range=[date_from, date_to])
+                else:
+                    return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
+                
+            serializer = StockSerializer(stock, context={'include_data': False})
+            response_data = serializer.data
+            response_data['data'] = StockDataSerializer(stock_data, many=True).data
+            
+            return Response(response_data, status=status.HTTP_200_OK)
+        
         except Stock.DoesNotExist:
             return Response({"error": "Stock not found"}, status=status.HTTP_404_NOT_FOUND)
 
