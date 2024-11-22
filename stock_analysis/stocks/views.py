@@ -12,6 +12,7 @@ from stock_analysis.utils.utils import api_response
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from datetime import datetime
+import re
 
 # Create your views here.
 
@@ -27,7 +28,7 @@ class StockDetailView(APIView):
         try:
             
             stock = Stock.objects.prefetch_related('data').get(symbol=symbol.upper())
-            stock_data = stock.data.all()
+            stock_data = stock.data.order_by('date').all()
             
             if date_from and date_to:
                 
@@ -67,9 +68,13 @@ class StockPredictionView(APIView):
             formatted_stock_data = self.format_stock_data(stock_data)
 
             # Call AI analysis service
-            prediction = self.analyze_stock_data(formatted_stock_data, stock.company_name)
+            analysis = self.analyze_stock_data(formatted_stock_data, stock.company_name)
 
-            return JsonResponse({"symbol": symbol, "prediction": prediction})
+            return JsonResponse({
+                "symbol": symbol, 
+                "prediction": analysis["prediction"],
+                "rating": analysis["rating"],
+            })
         
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -87,17 +92,31 @@ class StockPredictionView(APIView):
 
     def analyze_stock_data(self, stock_data, company_name):
         # Generate a prompt based on the stock data
-        prompt = f"""This is the stock is for {company_name} in the Philippines. Analyze the following stock data for technical insights and provide an investment recommendation. Include the following:
-        1. Key insights from trends and patterns.
-        2. Technical analysis focusing on indicators such as moving averages, RSI, or MACD.
-        3. A clear recommendation (BUY, HOLD, or SELL), with reasoning.
+        # todo: Feature 4. Technical analysis focusing on indicators such as moving averages, RSI, or MACD.
+        prompt = f"""
+        Analyze the stock data for {company_name} in the Philippines and provide a technical investment recommendation. Base your analysis on the following criteria:
+
+        1. Identify key insights from trends and patterns observed in the data provided.
+        2. Assess both short-term and long-term trends, suggesting potential buying and selling price ranges. Even if the data appears limited, provide your best estimate based on the available information.
+        3. Provide a clear investment recommendation in the format: **[Buy Rating: <rating>]**, where <rating> is one of the following: "Strong Buy", "Buy", "Hold", "Sell", or "Strong Sell".
+        4. Justify your recommendation with clear reasoning derived directly from the provided data. Avoid statements like "more data is needed" or "insufficient information"; instead, offer the most actionable insights possible within the given dataset.
+
+        Ensure the response is concise, actionable, and follows the requested format.
 
         Stock Data:
         {stock_data}"""
 
-        # Get a response from ChatGPT
-        analysis = get_gemini_response(prompt)
-
+        # Get a response from AI
+        prediction = get_gemini_response(prompt)
+        ''' prediction = "The provided data shows a generally downward trend in the PSEi index from April 2022 to November 2024, with some periods of consolidation and minor upward movements. The absence of volume data for most of the period makes a definitive technical analysis challenging.  However, we can observe some broader trends:\n\n**Trends and Patterns:**  The long-term trend is bearish.  While there are short-term fluctuations, the overall direction has been downwards.  There's no clear discernible pattern like a head and shoulders or double bottom to suggest a potential reversal.\n\n\n**Technical Analysis Limitations:** Without volume data, it's impossible to confirm the strength of price movements.  Moving averages would be useful for trend confirmation but are hard to calculate reliably with many 0 volume days.  RSI and MACD would also benefit from complete volume data to paint an accurate picture of momentum and potential overbought/oversold conditions.  The very low or zero volume on many days is highly unusual and may indicate data issues or very low liquidity in the market during those periods.\n\n\n**Recommendation:** Given the predominantly downward trend observed and the limitations imposed by insufficient data, a **[Buy Rating: Hold]** is recommended.  It's prudent to wait for more data, particularly volume data, to perform a robust technical analysis and to understand the market conditions better before taking a buy or sell decision. The low volume itself makes the index less attractive, as there might be difficulties in entering or exiting positions quickly.  Further investigation is required to determine the cause of the zero volume days and assess if the data itself is reliable.\n" '''
+        
+        pattern = r'\[\s*Buy Rating:\s*(.*?)\s*\]'
+        rating = re.findall(pattern, prediction)
+        
+        analysis = {
+            "prediction": prediction,
+            "rating": rating[0] if rating else 'None'
+        }
         return analysis
 
 class StockListView(generics.ListAPIView):

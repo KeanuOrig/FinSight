@@ -4,8 +4,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 import google.generativeai as genai
 import os
 
-# Create your views here.
-# add here to your generated API key
 genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
 
 def get_gemini_response(prompt):
