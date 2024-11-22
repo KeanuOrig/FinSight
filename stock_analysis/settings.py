@@ -50,6 +50,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Frontend origin
+    "https://fin-s1ght.vercel.app/"
 ]
 
 # Application definition
