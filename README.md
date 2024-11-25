@@ -37,3 +37,36 @@ To get started with **FinSight**, clone the repository, set up a virtual environ
 - Python 3.x
 - Django
 - django-environ (for environment variable management)
+
+### Getting Started: Setup and Operations Guide
+1. Migrate the Database
+
+2. Input env values
+
+3. Create Superuser and Load Initial Data
+   - Run the following API to create a superuser and seed the database with initial fixture data.
+   - URL: /api/create-superuser-and-load-fixtures/
+   - This will create a superuser (with default credentials) and load stock data into the database.
+  
+4. Login to Admin Panel
+   - Go to the Django admin panel: /admin
+   - Use the following credentials to log in:
+   - Username: admin
+   - Password: admin
+   - Once logged in, you can manage your stock data, adjust settings, or perform other administrative tasks.
+     
+5. Import or Modify Stock Data
+   - Navigate to the admin panel, and locate the stock data section.
+   - Import new stock data or modify existing records as needed.
+     
+6. Run Stock Data Analysis
+   - Use the following API endpoint to analyze stock data for a given symbol:
+   - URL Format: /stocks/predict/<str:symbol>/
+   - Replace <str:symbol> with the stock symbol you want to analyze (e.g., /stocks/predict/AAPL/ for Apple).
+   - The API will return predictive analytics and insights about the stock.
+     
+7. Frontend Option (Optional)
+   - If you want a frontend interface for your application, you can serve it by running the following React app:
+   - Frontend Repo: FinSight-React
+   - Follow the setup instructions in the repo to get it running on your local server.
+   - This will provide a user-friendly UI to interact with the data and predictions.
