@@ -36,7 +36,6 @@ To get started with **FinSight**, clone the repository, set up a virtual environ
 ### Prerequisites
 - Python 3.x
 - Django
-- django-environ (for environment variable management)
 
 ### Getting Started: Setup and Operations Guide
 1. Migrate the Database
